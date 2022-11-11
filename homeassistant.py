@@ -94,6 +94,22 @@ class PwrCellHA():
         self.__pwrcell.inverter.REbus_status[0].St,
         device_id='pwrcell_inverter',
         sensor_id='inverter_state')
+    self.__define_sensor(
+        self.__pwrcell.inverter.REbus_status[0].P,
+        device_id='pwrcell_inverter',
+        sensor_id='REbus_power')
+    self.__define_sensor(
+        self.__pwrcell.inverter.REbus_status[0].V,
+        device_id='pwrcell_inverter',
+        sensor_id='REbus_voltage')
+    self.__define_sensor(
+        self.__pwrcell.inverter.REbus_status[0].I,
+        device_id='pwrcell_inverter',
+        sensor_id='REbus_current')
+    self.__define_sensor(
+        self.__pwrcell.inverter.REbus_status[0].T,
+        device_id='pwrcell_inverter',
+        sensor_id='inverter_temperature')
 
     if hasattr(self.__pwrcell,'battery'):
         self.__define_sensor(
@@ -312,6 +328,10 @@ class PwrCellHA():
         return 'energy'
       if p_units in ['%WHRtg']:
         return 'battery'
+      if p_units in ['A']:
+        return 'current'
+      if p_units in ['Deg C']:
+        return 'temperature'
       if p_units is None:
           p_name = point.pdef.get(mdef.NAME)
           if p_name in ['Vin']:
@@ -329,6 +349,8 @@ class PwrCellHA():
     p_units = point.pdef.get(mdef.UNITS)
     if p_units in ['%WHRtg']:
       return '%'
+    if p_units in ['Deg C']:
+      return 'C'
     if p_units is None:
         p_name = point.pdef.get(mdef.NAME)
         if p_name in ['Vin']:
